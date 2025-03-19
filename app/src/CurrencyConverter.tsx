@@ -1,45 +1,30 @@
-import { CurrencyExchangeRate } from './model/currency';
-import { parseExchangeRates } from './helpers/parseExchangeRates';
-import { useQuery } from '@tanstack/react-query';
+import React, { useState } from "react";
+import { CurrencyExchangeRate } from "./model/currency";
 
-export function CurrencyConverter() {
-  function useExchangeRates() {
-    return useQuery({
-      queryKey: ['exchangeRates'],
-      queryFn: async (): Promise<Array<CurrencyExchangeRate>> => {
-        const response = await fetch(
-          'https://api.allorigins.win/raw?url=https://www.cnb.cz/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing/daily.txt'
-        );
-
-        return parseExchangeRates(await response.text());
-      },
-    });
-  }
-
-  const { status, data, error, isFetching } = useExchangeRates();
-
-  if (isFetching) return <p>Loading...</p>;
-  if (error) return <p>Something went wrong!</p>;
-
-  return (
-    <>
-      {data && (
-        <ul>
-          {data.map((exchangeRate) => (
-            <li key={exchangeRate.code}>{exchangeRate.currency}</li>
-          ))}
-        </ul>
-      )}{' '}
-    </>
-  );
+interface Props {
+  exchangeRate: CurrencyExchangeRate;
 }
 
-// TODO good ol fetch way
-// const fetchExchangeRates = async () => {
-//   const response = await fetch('https://www.cnb.cz/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing/daily.txt');
-//   if (!response.ok) {
-//     throw new Error('Network response was not ok');
-//   }
+const CurrencyConverter = ({ exchangeRate }: Props) => {
+  const [amount, setAmount] = useState<number>(1);
 
-//   return parseExchangeRates(await response.text());
-// };
+  return (
+    <div>
+      <h2>
+        {exchangeRate.currency} ({exchangeRate.code}): {exchangeRate.rate}
+      </h2>
+      <input
+        type="number"
+        value={amount}
+        // todo use floating points instead of integers
+        onChange={(e) => setAmount(parseInt(e.target.value, 10))}
+        placeholder="Amount"
+      />
+      <p>
+        {amount} {exchangeRate.currency} = {amount * exchangeRate.rate} CZK
+      </p>
+    </div>
+  );
+};
+
+export default CurrencyConverter;
