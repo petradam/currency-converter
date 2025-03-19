@@ -19,18 +19,24 @@ function useExchangeRates() {
 
 const CurrencyList = () => {
   const { status, data, error, isFetching } = useExchangeRates();
-  const [selectedExchangeRate, setSelectedExchangeRate] = useState<CurrencyExchangeRate | null>()
+  const [selectedExchangeRate, setSelectedExchangeRate] =
+    useState<CurrencyExchangeRate | null>();
 
-  if (isFetching) return <p>Loading...</p>;
+  if (isFetching) return <p>Loading exchange rates...</p>;
   if (error) return <p>Something went wrong!</p>;
 
   return (
     <>
-      {selectedExchangeRate && <CurrencyConverter exchangeRate={selectedExchangeRate} />}
+      {selectedExchangeRate && (
+        <CurrencyConverter exchangeRate={selectedExchangeRate} />
+      )}
       {data && (
         <ul>
           {data.map((exchangeRate) => (
-            <li key={exchangeRate.code} onClick={() => setSelectedExchangeRate(exchangeRate)}>
+            <li
+              key={exchangeRate.code}
+              onClick={() => setSelectedExchangeRate(exchangeRate)}
+            >
               {exchangeRate.currency} ({exchangeRate.code}): {exchangeRate.rate}{" "}
               {exchangeRate.country}
             </li>
