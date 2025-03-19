@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CurrencyExchangeRate } from "./model/currency";
 import { convertCurrency } from "./helpers/convertCurrency";
 

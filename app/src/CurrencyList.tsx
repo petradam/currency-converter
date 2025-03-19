@@ -18,7 +18,7 @@ function useExchangeRates() {
 }
 
 const CurrencyList = () => {
-  const { status, data, error, isFetching } = useExchangeRates();
+  const { data, error, isFetching } = useExchangeRates();
   const [selectedExchangeRate, setSelectedExchangeRate] =
     useState<CurrencyExchangeRate | null>();
 
