@@ -1,7 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseExchangeRates } from './parseExchangeRates'; // Adjust the import path as needed
-
-// Test cases
+import { parseExchangeRates } from './parseExchangeRates';
 
 describe('parseExchangeRates', () => {
   it('should return an empty array when given an empty string', () => {

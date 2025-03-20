@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { CurrencyExchangeRate } from './model/currency';
+import { ExchangeRate } from './model/exchangeRate';
 import { convertCurrency } from './helpers/convertCurrency';
 import ConversionRateItem from './ConversionRateItem';
 
@@ -12,12 +12,12 @@ const ConversionForm = styled.div`
 `;
 
 interface Props {
-  exchangeRates: CurrencyExchangeRate[];
+  exchangeRates: ExchangeRate[];
 }
 
 const CurrencyConverter = ({ exchangeRates }: Props) => {
   const [amount, setAmount] = useState<number>(1);
-  const [selectedExchangeRate, setSelectedExchangeRate] = useState<CurrencyExchangeRate>(exchangeRates[0]);
+  const [selectedExchangeRate, setSelectedExchangeRate] = useState<ExchangeRate>(exchangeRates[0]);
 
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCode = e.target.value;
@@ -40,11 +40,7 @@ const CurrencyConverter = ({ exchangeRates }: Props) => {
 
         <span>CZK</span>
 
-        {amount > 0 && (
-          <p>
-            <span> = {convertCurrency(amount, selectedExchangeRate).toFixed(3)}</span>
-          </p>
-        )}
+        <p> = {convertCurrency(amount, selectedExchangeRate).toFixed(3)}</p>
 
         <select onChange={handleCurrencyChange} value={selectedExchangeRate.code}>
           {exchangeRates.map((rate) => (

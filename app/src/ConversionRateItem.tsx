@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CurrencyExchangeRate } from './model/currency';
+import { ExchangeRate } from './model/exchangeRate';
 
 const ItemStyle = styled.div`
   padding: 5px;
@@ -43,7 +43,7 @@ const ItemStyle = styled.div`
 `;
 
 interface Props {
-  rate: CurrencyExchangeRate;
+  rate: ExchangeRate;
 }
 
 const ConversionRateItem = ({ rate }: Props) => {

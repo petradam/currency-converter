@@ -1,6 +1,6 @@
-import { CurrencyExchangeRate } from '../model/currency';
+import { ExchangeRate } from '../model/exchangeRate';
 
-export const parseExchangeRates = (data: string): CurrencyExchangeRate[] => {
+export const parseExchangeRates = (data: string): ExchangeRate[] => {
   const lines = data.trim().split('\n');
   const currencyLines = lines.slice(2); // skip headers
 
