@@ -23,22 +23,18 @@ const AppContainer = styled.div`
   align-items: center;
   width: 100%;
   padding: 20px;
-  background-color: var(--background-color);
-  color: var(--color);
-  font-family: var(--font-family);
 `;
 
 const Title = styled.h1`
   font-size: 3.2em;
   line-height: 1.1;
-  color: inherit;
 `;
 
 const App = () => {
   return (
     <PersistQueryClientProvider client={queryClient} persistOptions={{ persister }}>
       <AppContainer>
-        <Title>Currency Converter</Title>
+        <Title>CZK Currency Converter</Title>
         <CurrencyList />
       </AppContainer>
     </PersistQueryClientProvider>

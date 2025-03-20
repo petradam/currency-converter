@@ -1,33 +1,61 @@
+import styled from 'styled-components';
 import { useState } from 'react';
 import { CurrencyExchangeRate } from './model/currency';
 import { convertCurrency } from './helpers/convertCurrency';
+import ConversionRateItem from './ConversionRateItem';
+
+const ConversionForm = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+`;
 
 interface Props {
-  exchangeRate: CurrencyExchangeRate;
+  exchangeRates: CurrencyExchangeRate[];
 }
 
-const CurrencyConverter = ({ exchangeRate }: Props) => {
+const CurrencyConverter = ({ exchangeRates }: Props) => {
   const [amount, setAmount] = useState<number>(1);
+  const [selectedExchangeRate, setSelectedExchangeRate] = useState<CurrencyExchangeRate>(exchangeRates[0]);
+
+  const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCode = e.target.value;
+    const rate = exchangeRates.find((rate) => rate.code === selectedCode);
+    if (rate) {
+      setSelectedExchangeRate(rate);
+    }
+  };
 
   return (
     <div>
-      <h2>
-        {exchangeRate.amount} {exchangeRate.currency} ({exchangeRate.code}): {exchangeRate.rate}
-      </h2>
-      <input
-        type="number"
-        value={amount}
-        onChange={(e) => setAmount(parseFloat(e.target.value))}
-        placeholder="Amount (CZK)"
-        step="0.01"
-      />
-      <div>
+      <ConversionForm>
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(parseFloat(e.target.value))}
+          placeholder="Amount (CZK)"
+          step="0.001"
+        />
+
+        <span>CZK</span>
+
         {amount > 0 && (
           <p>
-            {amount} {exchangeRate.currency} = <span> {convertCurrency(amount, exchangeRate).toFixed(2)} CZK</span>
+            <span> = {convertCurrency(amount, selectedExchangeRate).toFixed(3)}</span>
           </p>
         )}
-      </div>
+
+        <select onChange={handleCurrencyChange} value={selectedExchangeRate.code}>
+          {exchangeRates.map((rate) => (
+            <option key={rate.code} value={rate.code}>
+              {rate.code} ({rate.country} {rate.currency})
+            </option>
+          ))}
+        </select>
+      </ConversionForm>
+
+      <ConversionRateItem rate={selectedExchangeRate} />
     </div>
   );
 };
