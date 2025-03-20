@@ -1,60 +1,64 @@
 import styled from 'styled-components';
 import { ExchangeRate } from './model/exchangeRate';
 
-const ItemStyle = styled.div`
-  padding: 5px;
+interface StyledProps {
+  size?: 'normal' | 'smaller';
+  display?: 'normal' | 'condensed';
+}
+
+const ItemStyle = styled.div<StyledProps>`
+  display: ${({ display }) => (display === 'normal' ? 'flex' : 'unset')};
+  justify-content: ${({ display }) => (display === 'normal' ? 'space-between' : 'unset')};
+  padding: 8px 0;
   width: 100%;
-  max-width: 500px;
-  border-radius: 8px;
-
-  h2 {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #333;
-    line-height: 1.4;
-  }
-
-  p {
-    font-size: 1rem;
-    color: #666;
-    margin: 5px 0;
-  }
+  margin: 0;
+  font-size: ${({ size }) => (size === 'smaller' ? '1rem' : '1.2rem')};
+  font-weight: 600;
+  color: #222;
+  line-height: 1.4;
+  text-align: center;
 
   .currency {
-    color: #007bff;
+    color: #ff4f5e;
     font-weight: 700;
   }
 
   .country {
-    color: #888;
+    color: #6c757d;
     font-weight: 400;
   }
 
   .rate {
-    color: #28a745;
+    color: #12c2e9;
     font-weight: 600;
   }
 
   .code {
-    color: #6f42c1;
+    color: #7360f2;
     font-weight: 500;
   }
 `;
 
 interface Props {
   rate: ExchangeRate;
+  size?: 'normal' | 'smaller';
+  display?: 'normal' | 'condensed';
 }
 
-const ConversionRateItem = ({ rate }: Props) => {
+const ConversionRateItem = ({ rate, size = 'normal', display = 'normal' }: Props) => {
   return (
-    <ItemStyle key={rate.code}>
-      <h2>
+    <ItemStyle key={rate.code} size={size} display={display}>
+      <span>
         <span className="currency">{rate.amount} </span>
         <span className="code">{rate.code} </span>
-        <span className="country">{`(${rate.country} ${rate.currency}) `}</span>={' '}
-        <span className="rate"> {rate.rate}</span> CZK
-      </h2>
+        <span className="country">
+          ({rate.country} {rate.currency})
+        </span>
+        {display === 'condensed' && <span>&nbsp;=&nbsp;</span>}
+      </span>
+      <span>
+        <span className="rate">{rate.rate}</span> CZK
+      </span>
     </ItemStyle>
   );
 };

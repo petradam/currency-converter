@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { QueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
-import CurrencyList from './CurrencyList';
+import CurrencyConverterPage from './CurrencyConverterPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,12 +20,11 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
   padding: 20px;
 `;
 
 const Title = styled.h1`
-  font-size: 3.2em;
+  font-size: 2.5em;
   line-height: 1.1;
 `;
 
@@ -34,7 +33,7 @@ const App = () => {
     <PersistQueryClientProvider client={queryClient} persistOptions={{ persister }}>
       <AppContainer>
         <Title>CZK Currency Converter</Title>
-        <CurrencyList />
+        <CurrencyConverterPage />
       </AppContainer>
     </PersistQueryClientProvider>
   );
