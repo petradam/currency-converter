@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { QueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
