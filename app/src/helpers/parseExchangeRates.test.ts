@@ -1,15 +1,38 @@
 import { describe, expect, it } from 'vitest';
+import { parseExchangeRates } from './parseExchangeRates'; // Adjust the import path as needed
 
-export function add(a: number, b: number): number {
-  return a + b;
-}
+// Test cases
 
-describe('add function', () => {
-  it('adds two numbers correctly', () => {
-    expect(add(2, 3)).toBe(5);
+describe('parseExchangeRates', () => {
+  it('should return an empty array when given an empty string', () => {
+    expect(parseExchangeRates('')).toEqual([]);
   });
 
-  it('handles negative numbers', () => {
-    expect(add(-2, -3)).toBe(-5);
+  it('should correctly parse valid exchange rate data', () => {
+    const input = `19 Mar 2025 #55
+Country|Currency|Amount|Code|Rate
+Australia|dollar|1|AUD|14.524
+Brazil|real|1|BRL|4.038`;
+
+    const expectedOutput = [
+      { country: 'Australia', currency: 'dollar', amount: 1, code: 'AUD', rate: 14.524 },
+      { country: 'Brazil', currency: 'real', amount: 1, code: 'BRL', rate: 4.038 },
+    ];
+
+    expect(parseExchangeRates(input)).toEqual(expectedOutput);
+  });
+
+  it('should correctly parse exchange rate data with leading/trailing whitespace', () => {
+    const input = `19 Mar 2025 #55
+      Country|Currency|Amount|Code|Rate
+      Australia | dollar | 1 | AUD | 14.524
+      Brazil|real|1|BRL|123.456`;
+
+    const expectedOutput = [
+      { country: 'Australia', currency: 'dollar', amount: 1, code: 'AUD', rate: 14.524 },
+      { country: 'Brazil', currency: 'real', amount: 1, code: 'BRL', rate: 123.456 },
+    ];
+
+    expect(parseExchangeRates(input)).toEqual(expectedOutput);
   });
 });
