@@ -1,42 +1,70 @@
-import { CurrencyExchangeRate } from './model/currency';
-import { parseExchangeRates } from './helpers/parseExchangeRates';
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import CurrencyConverter from './CurrencyConverter';
+import { useExchangeRates } from './api/useExchangeRates';
+import { CurrencyExchangeRate } from './model/currency';
 
-function useExchangeRates() {
-  return useQuery({
-    queryKey: ['exchangeRates'],
-    queryFn: async (): Promise<Array<CurrencyExchangeRate>> => {
-      const response = await fetch(
-        'https://api.allorigins.win/raw?url=https://www.cnb.cz/en/financial-markets/foreign-exchange-market/central-bank-exchange-rate-fixing/central-bank-exchange-rate-fixing/daily.txt'
-      );
+const ListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: var(--background-color);
+  color: var(--color);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+`;
 
-      return parseExchangeRates(await response.text());
-    },
-  });
-}
+const CurrencyItem = styled.div`
+  padding: 15px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  background: var(--button-bg, #1a1a1a);
+  color: var(--color);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.3s ease;
+
+  &:hover {
+    background: var(--hover-bg, #535bf2);
+    transform: scale(1.02);
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+`;
 
 const CurrencyList = () => {
   const { data, error, isFetching } = useExchangeRates();
-  const [selectedExchangeRate, setSelectedExchangeRate] = useState<CurrencyExchangeRate | null>();
+  const [selectedExchangeRate, setSelectedExchangeRate] = useState<CurrencyExchangeRate | null>(null);
 
   if (isFetching) return <p>Loading exchange rates...</p>;
   if (error) return <p>Something went wrong!</p>;
 
   return (
-    <>
+    <ListContainer>
       {selectedExchangeRate && <CurrencyConverter exchangeRate={selectedExchangeRate} />}
       {data && (
-        <ul>
-          {data.map((exchangeRate) => (
-            <li key={exchangeRate.code} onClick={() => setSelectedExchangeRate(exchangeRate)}>
-              {exchangeRate.currency} ({exchangeRate.code}): {exchangeRate.rate} {exchangeRate.country}
-            </li>
+        <>
+          <h2>Todays conversion rates</h2>
+          {data.map((rate) => (
+            <CurrencyItem key={rate.code} onClick={() => setSelectedExchangeRate(rate)}>
+              <h2>
+                {rate.currency} ({rate.code}): {rate.rate} ({rate.country})
+              </h2>
+            </CurrencyItem>
           ))}
-        </ul>
+        </>
       )}
-    </>
+      <pre>{JSON.stringify(selectedExchangeRate, null, 2)}</pre>
+    </ListContainer>
   );
 };
 
