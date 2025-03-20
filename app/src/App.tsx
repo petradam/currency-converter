@@ -26,6 +26,7 @@ const AppContainer = styled.div`
 const Title = styled.h1`
   font-size: 2.5em;
   line-height: 1.1;
+  text-align: center;
 `;
 
 const App = () => {

@@ -11,7 +11,7 @@ const ComponentStyle = styled.div`
 `;
 
 const ListContainer = styled.div`
-  padding: 20px;
+  padding: 15px;
   width: 100%;
   max-width: 450px;
   border-radius: 10px;

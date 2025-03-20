@@ -12,7 +12,7 @@ const ItemStyle = styled.div<StyledProps>`
   padding: 8px 0;
   width: 100%;
   margin: 0;
-  font-size: ${({ size }) => (size === 'smaller' ? '1rem' : '1.2rem')};
+  font-size: ${({ size }) => (size === 'smaller' ? '1rem' : '1.1rem')};
   font-weight: 600;
   color: #222;
   line-height: 1.4;
