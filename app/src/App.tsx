@@ -1,8 +1,8 @@
-import "./App.css";
-import { QueryClient } from "@tanstack/react-query";
-import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
-import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
-import CurrencyList from "./CurrencyList";
+import './App.css';
+import { QueryClient } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
+import CurrencyList from './CurrencyList';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,10 +18,7 @@ const persister = createSyncStoragePersister({
 
 const App = () => {
   return (
-    <PersistQueryClientProvider
-      client={queryClient}
-      persistOptions={{ persister }}
-    >
+    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister }}>
       <CurrencyList />
     </PersistQueryClientProvider>
   );
